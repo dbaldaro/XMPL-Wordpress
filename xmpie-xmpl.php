@@ -18,8 +18,6 @@ register_deactivation_hook(__FILE__, 'xmpie_xm_deactivation');
 
 add_action('wp_enqueue_scripts', 'xmpie_xm_scripts');
 function xmpie_xm_scripts() {
-
-	
     wp_register_script('xmpcfg', plugins_url('xmpcfg.js', __FILE__));
     wp_enqueue_script('xmpcfg');
 
@@ -28,13 +26,13 @@ function xmpie_xm_scripts() {
     $circle_project_id = (get_option('xmpie_circle_project_id') != '') ? get_option('xmpie_circle_project_id') : '';
     $circle_project_name = (get_option('xmpie_circle_project_name') != '') ? get_option('xmpie_circle_project_name') : '';
 
-
-        $config_array = array(
-            'access_token' => $access_token,
-            'xmpurl' => $xmpurl,
-            'circle_project_id' => $circle_project_id,
-            'circle_project_name' => $circle_project_name
-        );
+	$config_array = array(
+		'access_token' => $access_token,
+		'xmpurl' => $xmpurl,
+		'circle_project_id' => $circle_project_id,
+		'circle_project_name' => $circle_project_name
+	);
+	
   wp_register_script('jqueryxmp', 'https://ajax.xmcircle.com/ajax/libs/xmpl/1.0.8/jquery/jquery-1.10.2.min.js');
   wp_enqueue_script('jqueryxmp');
   wp_localize_script('xmpcfg', 'setting', $config_array);
@@ -42,38 +40,27 @@ function xmpie_xm_scripts() {
   wp_register_script('xmpjs', 'https://ajax.xmcircle.com/ajax/libs/xmpl/1.0.8/xmp/js/xmp.min.js');
   wp_enqueue_script('xmpjs');
   
-  
-
-    
   wp_register_script('ucreate_xm_designjs', 'https://ajax.xmcircle.com/ajax/libs/xmpl/1.0.8/xmp/js/ucreateXMDesign.js');
   wp_enqueue_script('ucreate_xm_designjs');
-
 }
-
 
 add_action('wp_enqueue_scripts', 'xmpie_xm_styles');
 function xmpie_xm_styles() {
-
   wp_register_style('xmpie_styles', 'https://ajax.xmcircle.com/ajax/libs/xmpl/1.0.8/xmp/css/xmp.css');
   wp_enqueue_style('xmpie_styles');
   wp_register_style('xmpie_ucreateXMDesign', 'https://ajax.xmcircle.com/ajax/libs/xmpl/1.0.8/xmp/css/ucreateXMDesign.css');
-  wp_enqueue_style('xmpie_ucreateXMDesign');
-  
+  wp_enqueue_style('xmpie_ucreateXMDesign');  
 }
 
 add_shortcode("xmpie_xm", "xmpie_xm_display_logo");
 function xmpie_xm_display_logo() {
-
   $plugins_url = plugins_url();
- 
   echo '<img src="'.plugins_url( 'img/XMPIE_Logo.png' , __FILE__ ).'" />';
 }
 
 /* Save XMPie Options to database */
 add_action('save_post', 'xmpie_save_info');
-
 function xmpie_save_info($post_id) {
-
     // check autosave
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return $post_id;
@@ -98,8 +85,8 @@ function xmp_filter_tiny_mce_before_init( $options ) {
         $options['custom_elements'] .= ',';
     }
  
-    $options['extended_valid_elements'] .= 'div[ng-*|xmp-*]';
-    $options['custom_elements']         .= 'div[ng-*|xmp-*]';
+    $options['extended_valid_elements'] .= ',div[ng-*|xmp-*]';
+    $options['custom_elements']         .= ',div[ng-*|xmp-*]';
     $options['extended_valid_elements'] .= ',h1[ng-*|xmp-*]';
     $options['custom_elements']         .= ',h1[ng-*|xmp-*]';
     $options['extended_valid_elements'] .= ',h2[ng-*|xmp-*]';
@@ -139,14 +126,12 @@ function xmp_filter_tiny_mce_before_init( $options ) {
 
 
 add_action('admin_menu', 'xmpie_plugin_settings');
-
 function xmpie_plugin_settings() {
     //creecho ate new top-level menu
     add_menu_page('XMPie Settings', 'XMPie Settings', 'administrator', 'xmpie_settings', 'xmpie_display_settings');
 }
 
 function xmpie_display_settings() {
-
     $access_token = (get_option('xmpie_access_token') != '') ? get_option('xmpie_access_token') : '';
     $xmpurl = (get_option('xmpie_url') != '') ? get_option('xmpie_url') : '';
     $circle_project_id = (get_option('xmpie_circle_project_id') != '') ? get_option('xmpie_circle_project_id') : '';
